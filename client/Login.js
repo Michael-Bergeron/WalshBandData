@@ -15,7 +15,7 @@ export default function Login(props) {
         {props.login === '' ? (<></>) : (<div style = {{fontSize: '10px', color: 'red'}}>{props.login}</div>)}
         <input onChange = {(e) => setPassword(e.target.value)} placeholder = 'Enter Password' type="password"/>
       </div>
-      <Button onClick = {() => props.loginSubmit(username, password)} waves="light" style={{marginRight: '5px', width: '150px'}}>Login</Button>
+      <Button onClick = {() => props.loginSubmit(username, password)} waves="light" style={{marginRight: '5px', width: '150px', 'backgroundColor': '#1c4834', color: '#fdcc00'}}>Login</Button>
     </div>
   )
 }

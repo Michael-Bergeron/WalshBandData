@@ -6,7 +6,7 @@ export default function Primary(props) {
     <div className = 'col s2'>
       <div>Grade:</div>
       <Dropdown trigger={
-        <Button waves="light" style={{marginRight: '5px', width: '150px'}}>{props.submitData.grade}</Button>}>
+        <Button waves="light" style={{marginRight: '5px', width: '150px', 'backgroundColor': '#1c4834', color: '#fdcc00'}}>{props.submitData.grade}</Button>}>
         {props.grade.map(item => <a key = {item} onClick = {() => props.dataPress('grade', item)} href="#">{item}</a>)}
         <a onClick = {() => props.dataPress('grade', 'All')} href="#">All</a>
       </Dropdown>

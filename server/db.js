@@ -135,4 +135,28 @@ const checkCookie = (cookie, cb) => {
   })
 }
 
-module.exports = { getCategories, getEmails, login, checkCookie }
+const getStudent = (data, cb) => {
+  dataList.findOne({'First Name': data.firstName, 'Last Name': data.lastName})
+  .then((student) => {
+    cb(student)
+  })
+}
+
+const getAll = (cb) => {
+  dataList.find()
+  .then((items) => {
+    cb(items)
+  })
+}
+
+const editStudent = (data, cb) => {
+  dataList.updateOne({'First Name': data.student['First Name'], 'Last Name': data.student['Last Name']}, data.student)
+  .then((response) => cb(response))
+}
+
+const addStudent = (data, cb) => {
+  let newStudent = new dataList(data.student)
+  newStudent.save(() => cb(response))
+}
+
+module.exports = { getCategories, getEmails, login, checkCookie, getStudent, getAll, editStudent, addStudent }

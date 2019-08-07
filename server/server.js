@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(cookieParser());
 
+
 app.use(express.static(path.join(__dirname, '../dist')))
 app.use(parser.json());
 
@@ -29,9 +30,31 @@ app.get('/login', (req, res) => {
   })
 })
 
+app.get('/getStudent', (req, res) => {
+  db.getStudent(req.query, (result) => res.send(result))
+})
+
 app.get('/checkCookie', (req, res) => {
   db.checkCookie(req.cookies.WalshBand, (login) => {
     res.send(login)
+  })
+})
+
+app.post('/editStudent', (req, res) => {
+  db.editStudent(req.body, (response) => {
+    res.send('updated')
+  })
+})
+
+app.get('/getAll', (req, res) => {
+  db.getAll((data) => {
+    res.send(data)
+  })
+})
+
+app.post('/addStudent', (req, res) => {
+  db.addStudent(req.body, (response) => {
+    res.send('added')
   })
 })
 

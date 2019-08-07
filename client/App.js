@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import Navbar from './Navbar';
 import Primary from './Primary';
 import Login from './Login';
 import Secondary from './Secondary';
@@ -9,6 +9,8 @@ import Gender from './Gender';
 import HighSchool from './HighSchool';
 import { Button } from 'react-materialize';
 import axios from 'axios';
+import NewStudent from './NewStudent.js';
+import EditStudent from './EditStudent.js'
 
 export default class App extends Component {
   constructor (props) {
@@ -29,7 +31,13 @@ export default class App extends Component {
         highSchool: 'All'
       },
       textField: '',
-      login: ''
+      login: '',
+      page: {
+        'Get Data': 'inherit',
+        'Edit': 'none',
+        'New Student': 'none'
+      },
+      searchData: []
     }
   }
   componentDidMount() {
@@ -69,25 +77,47 @@ export default class App extends Component {
     })
   }
 
+  redirect(page) {
+    let newPage = this.state.page
+    newPage['Get Data'] = 'none';
+    newPage['Edit'] = 'none';
+    newPage['New Student'] = 'none';
+    newPage[page] = 'inherit'
+    this.setState({page: newPage})
+  }
+
   render() {
     return (
       <>
+      <div style = {{height: '150px', width: '100%', 'backgroundColor': '#1c4834'}}>
+          <img height = '150' style = {{left: '0', top: '0'}}src="http://walshband.com/img/walsh_logo.jpg" alt=""/>
+          <span style = {{position: 'relative', left: '20%', top: '-60px', fontSize: '50px', color: '#fdcc00'}}>Walsh Middle School Band</span>
+      </div>
+      <Navbar redirect = {this.redirect.bind(this)}/>
       {this.state.login !== 'Logged In' ? (
         <Login login = {this.state.login} loginSubmit = {this.loginSubmit.bind(this)}/>
-      ) : (<div>
-        <h1 className = 'center'>Walsh Band</h1>
-        <h3 className = 'center'>Click itemes to get Data</h3>
-        <div className = 'container row'>
-          <Primary submitData = {this.state.submitData} primaryGroup = {this.state.primaryGroup} dataPress = {this.dataPress.bind(this)}/>
-          <Secondary submitData = {this.state.submitData} secondaryGroup = {this.state.secondaryGroup} dataPress = {this.dataPress.bind(this)}/>
-          <Instrument submitData = {this.state.submitData} instrument = {this.state.instrument} dataPress = {this.dataPress.bind(this)}/>
-          <Grade submitData = {this.state.submitData} grade = {this.state.grade} dataPress = {this.dataPress.bind(this)}/>
-          <Gender submitData = {this.state.submitData} gender = {this.state.gender} dataPress = {this.dataPress.bind(this)}/>
-          <HighSchool submitData = {this.state.submitData} highSchool = {this.state.highSchool} dataPress = {this.dataPress.bind(this)}/>
-        </div>
-        <div>Email Output:<textarea value = {this.state.textField} onClick={(e)=>this.selectAll(e)}></textarea></div>
-        <Button onClick = {this.submitFields.bind(this)} waves="light" style={{marginRight: '5px', width: '150px'}}>Submit</Button>
-      </div>)}
+      ) : (<>
+        {this.state.page['Get Data'] === 'inherit' ? (
+          <div>
+            <h3 className = 'center'>Click items to get Data</h3>
+            <div className = 'container row'>
+              <Primary submitData = {this.state.submitData} primaryGroup = {this.state.primaryGroup} dataPress = {this.dataPress.bind(this)}/>
+              <Secondary submitData = {this.state.submitData} secondaryGroup = {this.state.secondaryGroup} dataPress = {this.dataPress.bind(this)}/>
+              <Instrument submitData = {this.state.submitData} instrument = {this.state.instrument} dataPress = {this.dataPress.bind(this)}/>
+              <Grade submitData = {this.state.submitData} grade = {this.state.grade} dataPress = {this.dataPress.bind(this)}/>
+              <Gender submitData = {this.state.submitData} gender = {this.state.gender} dataPress = {this.dataPress.bind(this)}/>
+              <HighSchool submitData = {this.state.submitData} highSchool = {this.state.highSchool} dataPress = {this.dataPress.bind(this)}/>
+            </div>
+            <div style = {{position: 'relative', left: '100px', width: '80%'}}>Email Output:
+              <textarea readOnly style = {{height: '150px'}} value = {this.state.textField} onClick={(e)=>this.selectAll(e)}>
+              </textarea>
+            </div>
+            <Button onClick = {this.submitFields.bind(this)} style={{position: 'relative', left:'40%', marginRight: '5px', width: '150px', 'backgroundColor': '#1c4834', color: '#fdcc00'}}>Submit</Button>
+            </div>) 
+            : (<></>)}
+          <NewStudent display = {this.state.page['New Student']}/>
+          <EditStudent display = {this.state.page['Edit']}/>
+            </>)}
       </>
     )
   }
